@@ -1,7 +1,8 @@
 # allianz
 
 Given the name of a subfeddit, the fastapi application returns a list of the most recent comments along with their unique identifiers, text, polarity score, and classification (positive, negative or neutral).
-For sentiment analysis Textblob has been used from textblob library 
+
+##### For sentiment analysis Textblob has been used from textblob library 
 The API also allows for optional filtering by a specific time range and sorting the results by the comments' polarity score.
 
 ## To execute:
