@@ -1,0 +1,37 @@
+name: feddit-CI
+
+on:
+  push:
+    branches: [ main ]
+  
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Build Dokcer image
+      run: docker build -t allianz/feddit:latest .
+
+    - name: Start feddit service container
+      run: docker run --name feddit-service -d -p 8080:8080 allianz/feddit:latest
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Lint code
+      run: |
+          pylint --fail-under=6.5 --disable=C0114,E0402,E0401,C0411 app
+
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+      
+    - name: Test
+      run: pytest app/tests/

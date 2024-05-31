@@ -1,0 +1,50 @@
+version: '3.4'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: "mysecretpassword"
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mynet
+
+  feddit:
+    image: chasingcars/feddit:latest
+    entrypoint: >
+      sh -c "sleep 5 && python main.py"
+    environment:
+      SQLALCHEMY_DATABASE_URI: "postgresql://postgres:mysecretpassword@db:5432/postgres"
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/version"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    links:
+      - "db:db"
+    depends_on:
+      - db
+    networks:
+      - mynet
+
+  fastapi-app:
+    build: .
+    ports:
+      - "8085:8085"
+    networks:
+      - mynet
+    environment:
+      - FEDDIT_SERVICE_NAME=feddit
+
+networks:
+  mynet:
+    driver: bridge
