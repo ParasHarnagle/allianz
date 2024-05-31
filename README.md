@@ -1,14 +1,16 @@
-# allianz
+# Allianz
 
 Given the name of a subfeddit, the fastapi application returns a list of the most recent comments along with their unique identifiers, text, polarity score, and classification (positive, negative or neutral).
 
-##### For sentiment analysis Textblob has been used from textblob library 
-The API also allows for optional filtering by a specific time range and sorting the results by the comments' polarity score.
+## For sentiment analysis 
+[Textblob](https://textblob.readthedocs.io/en/dev/quickstart.html)  has been used from textblob library 
 
 ## To execute:
 ```
 docker compose up --build
 ```
+### Sentiment Analysis api is running on localhost:8085
+
 ## Results
 API: 
 ```
