@@ -1,6 +1,7 @@
 # Allianz
 
 Given the name of a subfeddit, the fastapi application returns a list of the most recent comments along with their unique identifiers, text, polarity score, and classification (positive, negative or neutral).
+A workflow for CI/CD has been created using github actions with pylint for linting and pytest for testing.
 
 ## For sentiment analysis 
 [Textblob](https://textblob.readthedocs.io/en/dev/quickstart.html)  has been used from textblob library 
